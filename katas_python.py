@@ -49,6 +49,8 @@ def evaluar_notas(notas, nota_aprobado=5):
 # ==========================================================
 
 def factorial(n):
+    if n < 0:
+        raise ValueError("El factorial no está definido para números negativos")
     if n == 0:
         return 1
     return n * factorial(n - 1)
@@ -65,17 +67,12 @@ def tuplas_a_strings(lista):
 # ==========================================================
 # 8. División con manejo de excepciones
 # ==========================================================
-
-try:
-    num1 = float(input("Introduce el primer número: "))
-    num2 = float(input("Introduce el segundo número: "))
-    resultado = num1 / num2
-    print("Resultado:", resultado)
-except ValueError:
-    print("Error: debes introducir valores numéricos")
-except ZeroDivisionError:
-    print("Error: no se puede dividir entre cero")
-
+    
+def dividir(num1, num2):
+    try:
+        return num1 / num2
+    except ZeroDivisionError:
+        raise ZeroDivisionError("No se puede dividir entre cero")
 
 # ==========================================================
 # 9. Filtrar mascotas prohibidas en España usando filter()
@@ -103,15 +100,10 @@ def promedio_lista(lista):
 # 11. Validación de edad con excepciones
 # ==========================================================
 
-try:
-    edad = int(input("Introduce tu edad: "))
+def validar_edad(edad):
     if edad < 0 or edad > 120:
         raise ValueError("Edad fuera de rango")
-    print("Edad válida")
-except ValueError as error:
-    print("Error:", error)
-
-
+    return True
 # ==========================================================
 # 12. Longitud de cada palabra de una frase
 # ==========================================================
@@ -202,9 +194,9 @@ cubo = lambda x: x ** 3
 # ==========================================================
 
 def producto_total(lista):
+    if not lista:
+        return 0
     return reduce(lambda x, y: x * y, lista)
-
-
 # ==========================================================
 # 23. Concatenar palabras usando reduce()
 # ==========================================================
@@ -261,11 +253,12 @@ def primer_duplicado(lista):
 # 29. Enmascarar variable excepto últimos 4 caracteres
 # ==========================================================
 
+
 def enmascarar(valor):
     texto = str(valor)
+    if len(texto) <= 4:
+        return texto
     return "#" * (len(texto) - 4) + texto[-4:]
-
-
 # ==========================================================
 # 30. Comprobar anagramas
 # ==========================================================
@@ -278,13 +271,10 @@ def son_anagramas(p1, p2):
 # 31. Buscar nombre en lista o lanzar excepción
 # ==========================================================
 
-def buscar_nombre():
-    nombres = input("Introduce nombres separados por coma: ").split(",")
-    nombre = input("Nombre a buscar: ")
+def buscar_nombre(nombres, nombre):
     if nombre in nombres:
-        print("Nombre encontrado")
-    else:
-        raise ValueError("Nombre no encontrado")
+        return True
+    raise ValueError("Nombre no encontrado")
 
 
 # ==========================================================
@@ -332,24 +322,9 @@ class Arbol:
 # 35. Clase UsuarioBanco
 # ==========================================================
 
-class UsuarioBanco:
-    def __init__(self, nombre, saldo, cuenta_corriente):
-        self.nombre = nombre
-        self.saldo = saldo
-        self.cuenta_corriente = cuenta_corriente
-
-    def retirar_dinero(self, cantidad):
-        if cantidad > self.saldo:
-            raise ValueError("Saldo insuficiente")
-        self.saldo -= cantidad
-
-    def transferir_dinero(self, otro, cantidad):
-        otro.retirar_dinero(cantidad)
-        self.agregar_dinero(cantidad)
-
-    def agregar_dinero(self, cantidad):
-        self.saldo += cantidad
-
+def transferir_dinero(self, otro, cantidad):
+    self.retirar_dinero(cantidad)
+    otro.agregar_dinero(cantidad)
 
 # ==========================================================
 # 36. Procesamiento de texto
@@ -381,28 +356,27 @@ def procesar_texto(texto, opcion, *args):
 # 37. Día, tarde o noche según la hora
 # ==========================================================
 
-hora = int(input("Introduce la hora (0-23): "))
-if 6 <= hora < 12:
-    print("Día")
-elif 12 <= hora < 20:
-    print("Tarde")
-else:
-    print("Noche")
-
+def momento_del_dia(hora):
+    if 6 <= hora < 12:
+        return "Día"
+    elif 12 <= hora < 20:
+        return "Tarde"
+    else:
+        return "Noche"
 
 # ==========================================================
 # 38. Calificación en texto
 # ==========================================================
 
-nota = int(input("Introduce la nota: "))
-if nota <= 69:
-    print("Insuficiente")
-elif nota <= 79:
-    print("Bien")
-elif nota <= 89:
-    print("Muy bien")
-else:
-    print("Excelente")
+def calificacion_texto(nota):
+    if nota <= 69:
+        return "Insuficiente"
+    elif nota <= 79:
+        return "Bien"
+    elif nota <= 89:
+        return "Muy bien"
+    else:
+        return "Excelente"
 
 
 # ==========================================================
@@ -424,12 +398,7 @@ def calcular_area(figura, datos):
 # 40. Tienda con descuento
 # ==========================================================
 
-precio = float(input("Precio original: "))
-tiene_cupon = input("¿Tienes cupón? (si/no): ")
-
-if tiene_cupon == "si":
-    descuento = float(input("Valor del cupón: "))
+def precio_final(precio, descuento=0):
     if descuento > 0:
         precio -= descuento
-
-print("Precio final:", precio)
+    return precio
